@@ -219,7 +219,7 @@
                     result = ko.computed(function () {
                         var errors = [];
                         ko.utils.arrayForEach(validatables(), function (observable) {
-                            if (!observable.isValid()) {
+                            if (!observable.isValid() && observable.isModified()) {
                                 errors.push(observable.error);
                             }
                         });
@@ -232,7 +232,7 @@
                         validatables([]); //clear validatables
                         traverse(obj); // and traverse tree again
                         ko.utils.arrayForEach(validatables(), function (observable) {
-                            if (!observable.isValid()) {
+                            if (!observable.isValid() && observable.isModified()) {
                                 errors.push(observable.error);
                             }
                         });
