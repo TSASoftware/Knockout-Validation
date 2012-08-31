@@ -44,6 +44,20 @@ test('Empty spaces is not a valid value for required', function () {
     equal(testObj.isValid(), false, 'testObj is valid');
 });
 
+test('Issue #90 - "required: false" doesnt force validation', function () {
+
+    var testObj = ko.observable()
+                    .extend({ required: false });
+
+    equal(testObj.isValid(), true, 'testObj is valid without value');
+    
+    testObj('blah');
+    equal(testObj.isValid(), true, 'testObj is valid with value');
+
+    testObj(null);
+    equal(testObj.isValid(), true, 'testObj is valid without value after set/unset');
+});
+
 //#endregion
 
 //#region Min Validation
@@ -1004,14 +1018,14 @@ test('Changing the value of observable used in onlyIf condition triggers validat
     var person = {
         isMarried: ko.observable(false).extend({ required: true }),
     };
-    person.spouseName = ko.observable('').extend({ 
-                          required: { onlyIf: person.isMarried } 
+    person.spouseName = ko.observable('').extend({
+                          required: { onlyIf: person.isMarried }
                         });
     person.isMarried(false);
     ok(person.spouseName.isValid(), 'Unmarried person is valid without spouse name')
 
-    person.isMarried(true);   
-    equal(person.spouseName.isValid(), false, 'Married person is not valid without spouse name')    
+    person.isMarried(true);
+    equal(person.spouseName.isValid(), false, 'Married person is not valid without spouse name')
 });
 //#endregion
 
