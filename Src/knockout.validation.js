@@ -234,7 +234,7 @@
                     result = ko.computed(function () {
                         var errors = [];
                         ko.utils.arrayForEach(validatables(), function (observable) {
-                            if (!observable.isValid() && observable.isModified()) {
+                            if (observable.showError()) {
                                 errors.push(observable.error);
                             }
                         });
@@ -247,7 +247,7 @@
                         validatables([]); //clear validatables
                         traverse(obj); // and traverse tree again
                         ko.utils.arrayForEach(validatables(), function (observable) {
-                            if (!observable.isValid() && observable.isModified()) {
+                            if (observable.showError()) {
                                 errors.push(observable.error);
                             }
                         });
@@ -280,7 +280,7 @@
                     result();
                     
                     ko.utils.arrayForEach(validatables(), function (observable) {
-                        if (!observable.isValid() && observable.isModified()) {
+                        if (observable.showError()) {
                             invalidAndModifiedPresent = true;
                         }
                     });
@@ -864,6 +864,11 @@
             // a semi-protected observable
             observable.isValid = ko.computed(function () {
                 return observable.__valid__();
+            });
+
+            // indicates whether or not the error message should be shown.
+            observable.showError = ko.computed(function () {
+                return !observable.isValid() && observable.isModified();
             });
 
             //subscribe to changes in the observable
