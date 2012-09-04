@@ -850,11 +850,6 @@
 
             observable.isModified = ko.observable(false);
 
-            // indicates whether or not the error message should be shown.
-            observable.showError = ko.computed(function () {
-                return !observable.isValid() && observable.isModified();
-            });
-
             // we use a computed here to ensure that anytime a dependency changes, the
             // validation logic evaluates
             var h_obsValidationTrigger = ko.computed(function () {
