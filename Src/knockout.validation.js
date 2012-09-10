@@ -656,6 +656,10 @@
 
         return {
             init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                if ($(element).is('.cog-ctrl-exclude')) {
+                    return;
+                }
+
                 var config = utils.getConfigOptions(element);
 
                 // parse html5 input validation attributes, optional feature
@@ -698,14 +702,20 @@
 
     // override for KO's default 'value' binding
     (function () {
-        var init = ko.bindingHandlers['value'].init;
+        var valueInit = ko.bindingHandlers['value'].init;
 
-        ko.bindingHandlers['value'].init = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-
-            init(element, valueAccessor, allBindingsAccessor);
-
-            return ko.bindingHandlers['validationCore'].init(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
+        ko.bindingHandlers['value'].init = function () {
+            valueInit.apply(this, arguments);
+            return ko.bindingHandlers['validationCore'].init.apply(this, arguments);
         };
+
+        var selectedOptionsInit = ko.bindingHandlers['selectedOptions'].init;
+
+        ko.bindingHandlers['selectedOptions'].init = function () {
+            selectedOptionsInit.apply(this, arguments);
+            return ko.bindingHandlers['validationCore'].init.apply(this, arguments);
+        }
+
     } ());
 
 
