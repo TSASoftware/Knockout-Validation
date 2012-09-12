@@ -20,7 +20,7 @@
         // <script> tag: use the global `ko` object, attaching a `mapping` property
         factory(ko, ko.validation = {});
     }
-}(function ( ko, exports ) {
+} (function (ko, exports) {
 
     if (typeof (ko) === undefined) { throw 'Knockout is required, please ensure it is loaded before loading this validation plug-in'; }
 
@@ -273,12 +273,12 @@
                 obj.isValid = function () {
                     return obj.errors().length === 0;
                 };
-                obj.isAnyMessageShown = function() {
+                obj.isAnyMessageShown = function () {
                     var invalidAndModifiedPresent = false;
-                    
+
                     // ensure we have latest changes
                     result();
-                    
+
                     ko.utils.arrayForEach(validatables(), function (observable) {
                         if (observable.showError()) {
                             invalidAndModifiedPresent = true;
@@ -328,7 +328,7 @@
             addAnonymousRule: function (observable, ruleObj) {
                 var ruleName = utils.newId();
 
-                if ( ruleObj['message'] === undefined ) {
+                if (ruleObj['message'] === undefined) {
                     ruleObj['message'] = 'Error';
                 }
 
@@ -549,7 +549,7 @@
             //I think an empty email address is also a valid entry
             //if one want's to enforce entry it should be done with 'required: true'
             return utils.isEmptyVal(val) || (
-                // jquery validate regex - thanks Scott Gonzalez
+            // jquery validate regex - thanks Scott Gonzalez
                 validate && /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i.test(val)
             );
         },
@@ -698,7 +698,7 @@
             }
         };
 
-    }());
+    } ());
 
     // override for KO's default 'value' binding
     (function () {
@@ -716,6 +716,13 @@
             return ko.bindingHandlers['validationCore'].init.apply(this, arguments);
         }
 
+        var checkedInit = ko.bindingHandlers['checked'].init;
+
+        ko.bindingHandlers['checked'].init = function () {
+            checkedInit.apply(this, arguments);
+            return ko.bindingHandlers['validationCore'].init.apply(this, arguments);
+        }
+
     } ());
 
 
@@ -727,12 +734,12 @@
                 msg = null,
                 isModified = false,
                 isValid = false;
-                
+
             obsv.extend({ validatable: true });
 
             isModified = obsv.isModified();
             isValid = obsv.isValid();
-            
+
             // create a handler to correctly return an error message
             var errorMsgAccessor = function () {
                 if (!config.messagesOnModified || isModified) {
