@@ -865,7 +865,10 @@
             //the true holder of whether the observable is valid or not
             observable.__valid__ = ko.observable(true);
 
-            observable.isModified = ko.observable(false);
+            // Check for the existence of teh isModified flag on the observable.
+            if (!observable.isModified) {
+                observable.isModified = ko.observable(false);
+            }
 
             // we use a computed here to ensure that anytime a dependency changes, the
             // validation logic evaluates
